@@ -24,4 +24,6 @@ btnGen.addEventListener('click', () => {
             numGrid = 100
     }
     console.log(numGrid)
+    let numCells = Math.sqrt(numGrid)
+    console.log(numCells)
 })
