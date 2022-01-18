@@ -11,8 +11,17 @@
     margin: 0 auto;
 }
 
+header{
+    background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    min-height: 100px;
+    align-items: center;
+}
 
 body{
     background-color: lightgreen;
 }
+
+
 
