@@ -33,5 +33,20 @@ body{
 
 .cell{
     border: 1px solid black;
+
+    cursor: pointer;
+}
+
+.cell.bomb{
+    background-color: red;
+    cursor: not-allowed;
+}
+
+.cell.safe{
+    background-color: green;
+}
+
+.point{
+    border: 1px solid black;
 }
 
