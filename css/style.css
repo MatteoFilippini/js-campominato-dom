@@ -23,5 +23,15 @@ body{
     background-color: lightgreen;
 }
 
+#grid{
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
 
+.cell{
+    border: 1px solid black;
+}
 
