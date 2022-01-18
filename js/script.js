@@ -7,8 +7,21 @@ const btnGen = document.getElementById('buttonGen');
 
 
 btnGen.addEventListener('click', () => {
-    // prendo la scelta dell utente
+    // PRENDO LA SCELTA DELL UTENTE
     const choice = document.getElementById('choice').value;
 
-    console.log(choice)
+    // IN BASE ALLA SCELTA DECIDO IL NUMERO DI CASELLE PER TABELLA
+    let numGrid;
+
+    switch (choice) {
+        case 'diff2':
+            numGrid = 81
+            break;
+        case 'diff3':
+            numGrid = 59
+            break;
+        default:
+            numGrid = 100
+    }
+    console.log(numGrid)
 })
