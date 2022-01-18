@@ -4,25 +4,34 @@ const btnGen = document.getElementById('buttonGen');
 const bombs = [];
 // Prendo il punteggio da fuori
 const score = document.getElementById('score');
-// Creo la variabile punteggio
-let contatore = 0;
+// Prendo il messaggio
+const message = document.getElementById('message');
+let m = 'Hai perso';
+
 
 btnGen.addEventListener('click', () => {
     // -------------FUNZIONI-------------
 
     // SE L'ID DELLA CASELLA E' UGUALE AL NUMERO DI UNA BOMBA LA CASELLA DIVENTA ROSSA
-    const play = (cellClicked, bombs) => {
+    const play = (cellClicked, bombs, numVit) => {
         const cellId = parseInt(cellClicked.id);
         if (bombs.includes(cellId)) {
             showBombs(bombs);
-            Punteggio(contatore)
+            Punteggio(contatore);
+            message.innerText = m;
         } else {
             // Coloro la cella di green
             cellClicked.classList.add('safe');
             contatore++;
+            if (contatore === numVit) {
+                m = 'Hai vinto';
+                message.innerText = m;
+            }
         }
+
     }
 
+    // COLORO TUTTE LE BOMBE DI ROSSO
     const showBombs = (bombs) => {
         const cells = document.querySelectorAll('.cell');
         for (let i = 0; i < bombs.length; i++) {
@@ -31,14 +40,10 @@ btnGen.addEventListener('click', () => {
         }
     }
 
-
+    // MOSTRO A VIDEO IL PUNTEGGIO
     const Punteggio = (count) => {
         score.innerText = `Punteggio: ${count}`;
-
     }
-
-
-
 
     // CREO LE CASELLE DANDO UN ID AD OGNUNA
     const createCells = (numeri) => {
@@ -81,10 +86,15 @@ btnGen.addEventListener('click', () => {
 
     // ---------------PREPARAZIONE------------------
 
-    //prendo la griglia
+    // Prendo la griglia
     const grid = document.getElementById('grid');
-    //ripristino la griglia
+    // Ripristino la griglia e il  messaggio
     grid.innerText = '';
+    message.innerText = '';
+    // Creo la variabile punteggio
+    let contatore = 0;
+
+
     // PRENDO LA SCELTA DELL UTENTE
     const choice = document.getElementById('choice').value;
 
@@ -105,24 +115,14 @@ btnGen.addEventListener('click', () => {
     const numCells = Math.sqrt(numGrid);
     const dimension = `calc(100%/${numCells})`;
 
-    // CREO 16 BOMBE CON ALL'INTERNO UN NUMERO CASUALE 
-    // E UNICO COMPRESO TRA 1 E IL NUMERO MASSIMO DI CASELLE  
+    // Definisco le celle per la vittoria
+    let numVit = numGrid - 16;
 
-
-
-
-
-
-
-
-
-
-
-    // GIOCO
+    // ---------------GIOCO-----------------------
     createBombs(numGrid, bombs);
     createCells(numGrid);
 
-    // console.table(bombs);
+    console.table(bombs);
 
 
 
