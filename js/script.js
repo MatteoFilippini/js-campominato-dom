@@ -9,19 +9,70 @@ const message = document.getElementById('message');
 let m = 'Hai perso';
 
 
-btnGen.addEventListener('click', () => {
+function start() {
     // -------------FUNZIONI-------------
 
+    // NUMERO RANDOM
+    const getRandomNumber = (numero) => {
+        const randomNum = Math.floor(Math.random() * numero) + 1
+
+        return randomNum;
+    }
+
+    // CREO LE BOMBE E GLI ASSEGNO U NUMOERO
+    const createBombs = (numero, bombs) => {
+        do {
+            rNum = getRandomNumber(numero);
+
+            if (!bombs.includes(rNum)) {
+                bombs.push(rNum);
+            }
+        } while (bombs.length < 16)
+
+        return bombs
+    }
+
+    // GENERO LA GRIGLIA
+    const generateGrid = (cellsNumber, cellsPerRow, bombs) => {
+        for (let i = 1; i <= cellsNumber; i++) {
+            const cell = createCells(i, cellsPerRow);
+            cell.addEventListener('click', onCellClick);
+            grid.appendChild(cell);
+        }
+    }
+
+    // CREO LE CASELLE DANDO UN ID AD OGNUNA
+    function createCells(cellNumber, dimension) {
+        // creo un div
+        const cell = document.createElement('div');
+        // dichiaro la classe cell
+        cell.className = 'cell';
+        // definisco le dimensioni
+        cell.style.width = dimension;
+        cell.style.height = dimension;
+        // assegno un id
+        cell.id = cellNumber;
+        cell.innerText = cellNumber;
+        return cell;
+
+    }
+
+
+
+
     // SE L'ID DELLA CASELLA E' UGUALE AL NUMERO DI UNA BOMBA LA CASELLA DIVENTA ROSSA
-    const play = (cellClicked, bombs, numVit) => {
-        const cellId = parseInt(cellClicked.id);
+    function onCellClick(event) {
+        const cell = event.target;
+        cell.removeEventListener("click", onCellClick);
+
+        const cellId = parseInt(cell.id);
         if (bombs.includes(cellId)) {
             showBombs(bombs);
             Punteggio(contatore);
             message.innerText = m;
         } else {
             // Coloro la cella di green
-            cellClicked.classList.add('safe');
+            cell.classList.add('safe');
             contatore++;
             if (contatore === numVit) {
                 m = 'Hai vinto';
@@ -38,6 +89,11 @@ btnGen.addEventListener('click', () => {
             const bomb = bombs[i];
             cells[bomb - 1].classList.add('bomb');
         }
+        // non faccio piu cliccare nessuna cella
+        const allCells = grid.querySelectorAll('.cell');
+        for (let i = 0; i < allCells.length; i++) {
+            allCells[i].removeEventListener('click', onCellClick);
+        }
     }
 
     // MOSTRO A VIDEO IL PUNTEGGIO
@@ -45,44 +101,11 @@ btnGen.addEventListener('click', () => {
         score.innerText = `Punteggio: ${count}`;
     }
 
-    // CREO LE CASELLE DANDO UN ID AD OGNUNA
-    const createCells = (numeri) => {
-        for (let i = 1; i <= numGrid; i++) {
-            // creo un div
-            const cell = document.createElement('div');
-            // dichiaro la classe cell
-            cell.className = 'cell';
-            // definisco le dimensioni
-            cell.style.width = dimension;
-            cell.style.height = dimension;
-            // assegno un id
-            cell.id = i;
-            cell.innerText = i;
-            cell.addEventListener('click', (e) => play(e.target, bombs));
-            // aggiungo alla tabella
-            grid.appendChild(cell);
-        }
-    }
 
-    // CREO LE BOMBE E GLI ASSEGNO U NUMOERO
-    const createBombs = (numero, bombs) => {
-        do {
-            rNum = getRandomNumber(numero);
 
-            if (!bombs.includes(rNum)) {
-                bombs.push(rNum);
-            }
-        } while (bombs.length < 16)
 
-        return bombs
-    }
 
-    // NUMERO RANDOM
-    const getRandomNumber = (numero) => {
-        const randomNum = Math.floor(Math.random() * numero) + 1
 
-        return randomNum;
-    }
 
     // ---------------PREPARAZIONE------------------
 
@@ -120,10 +143,12 @@ btnGen.addEventListener('click', () => {
 
     // ---------------GIOCO-----------------------
     createBombs(numGrid, bombs);
-    createCells(numGrid);
+    generateGrid(numGrid, dimension, bombs);
 
     console.table(bombs);
 
 
 
-})
+}
+
+btnGen.addEventListener("click", () => start());
